@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import HomeFooter from '../components/HomeFooter.astro';
+
+// Declare all the icons you plan on using
+library.add(faGithub, faLinkedin, faEnvelope);
+
+const linkedInIcon = icon(faLinkedin);
+const emailIcon = icon(faEnvelope);
+const githubIcon = icon(faGithub);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main class="gradient-bg text-white min-h-screen h-full flex flex-col">
+			<div class="flex flex-1 ">
+			  <section class="flex justify-center max-w-lg w-full items-center text-center m-auto">
+				<div class="text-center mx-3 md:mx-0">
+				  <h1 class="my-4 text-2xl md:text-3xl font-extrabold font-header">Carlos Jimenez</h1>
+				  <h2 class="my-2 text-md md:text-lg font-light font-body">
+					Full Stack Web Developer, Freelancer and Writer of the Tech Gems Blog.
+				  </h2>
+				  <ul class="mt-8">
+					<li class="inline-block mx-2">
+					  <a href="https://github.com/techgems" class="text-3xl shadow-none hover:text-red-400">
+						<Fragment set:html={githubIcon.html} />
+					  </a>
+					</li>
+					<li class="inline-block mx-2">
+					  <a href="https://www.linkedin.com/in/carlos-jimenez-61a926b7/" class="text-3xl shadow-none hover:text-red-400">
+						<Fragment set:html={linkedInIcon.html} />
+					  </a>
+					</li>
+					<li class="inline-block mx-2 text-3xl">
+					  <a href="mailto:cjimenezber@gmail.com" class="text-3xl shadow-none hover:text-red-400">
+						<Fragment set:html={emailIcon.html} />
+					  </a>
+					</li>
+				  </ul>
+				</div>
+			  </section>
+			</div>
+		  </main>
+		<HomeFooter />
+	</body>
+</html>
+
+<style is:global>
+	/* Declare a custom CSS class to make the icon look right */
+	.svg-inline--fa {
+	  overflow: visible;
+	  box-sizing: content-box;
+	  display: inline-block;
+	  height: 1em;
+	  vertical-align: -0.125em;
+	}
+
+	.gradient-bg {
+		background: rgb(193,0,0);
+		background: radial-gradient(circle, rgba(193,0,0,1) 0%, rgba(38,0,0,1) 79%);
+	}
+</style>

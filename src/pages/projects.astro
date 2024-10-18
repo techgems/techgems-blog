@@ -1,0 +1,39 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import HomeFooter from '../components/HomeFooter.astro';
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.title {
+				margin: 0;
+				color: rgb(var(--black));
+				line-height: 1;
+			}
+			.date {
+				margin: 0;
+				color: rgb(var(--gray));
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main class="">
+			<section class="w-1/2 mx-auto mt-8 mb-20">
+                <!--Vite.NET-->
+                <div></div>
+                <!--Razor Component Tag Helpers-->
+                <div></div>
+                <!--Windy UI-->
+                <div></div>
+			</section>
+		</main>
+		<HomeFooter />
+	</body>
+</html>

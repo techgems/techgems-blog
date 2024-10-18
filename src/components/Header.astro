@@ -1,0 +1,32 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { Image } from 'astro:assets';
+import InvertedLogo from '../images/logos/techgems-inverted.png';
+---
+
+
+
+<header class="m-0 px-0 py-1 bg-red-950 shadow-md">
+	<nav class="flex justify-between max-h-20 md:justify-around">
+		<a href="/" class="my-auto ml-6 md:ml-0">
+			<Image src={InvertedLogo} alt="Logo" width="80" />
+		</a>
+		<div class="my-auto text-white">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/projects">Projects</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	nav a {
+		color: var(--black);
+		border-bottom: 4px solid transparent;
+		text-decoration: none;
+	}
+	nav a.active {
+		text-decoration: none;
+		border-bottom-color: var(--accent);
+	}
+</style>
