@@ -14,14 +14,14 @@ Dapper has two main advantages: simplicity and performance.
 
 Here's a sample of how simple it is to use this library:
 
-    using(var conn = new SqlConnection(ConnectionString))
-    {
-        var sql = "SELECT * FROM Person";
-
-        var personList = conn.Query<Person>(sql).ToList();
-
-        return personList;
-    }
+```csharp
+using(var conn = new SqlConnection(ConnectionString))
+{
+    var sql = "SELECT * FROM Person";
+    var personList = conn.Query<Person>(sql).ToList();
+    return personList;
+}
+```
 
 To use the SqlConnection type you'll need to install the following nuget package:
 
@@ -31,35 +31,39 @@ To use the SqlConnection type you'll need to install the following nuget package
 
 You can use a NpgsqlConnection for Postgres. All you need to do is install the following package:
 
+```bash
     Install-Package Npgsql
+```
 
 And the sample would look like this:
 
-    using(var conn = new NpgsqlConnection(ConnectionString))
-    {
-        var sql = "SELECT * FROM Person";
-
-        var personList = conn.Query<Person>(sql).ToList();
-
-        return personList;
-    }
+```csharp
+using(var conn = new NpgsqlConnection(ConnectionString))
+{
+    var sql = "SELECT * FROM Person";
+    var personList = conn.Query<Person>(sql).ToList();
+    return personList;
+}
+```
 
 ## Dapper with MySql
 
 For MySql it applies similarly, but you need to install instead.
     
+```bash
     Install-Package MySql.Data
+```
 
 Then the code would look like this:
 
-    using(var conn = new MySqlConnection(ConnectionString))
-    {
-        var sql = "SELECT * FROM Person";
-
-        var personList = conn.Query<Person>(sql).ToList();
-
-        return personList;
-    }
+```csharp
+using(var conn = new MySqlConnection(ConnectionString))
+{
+    var sql = "SELECT * FROM Person";
+    var personList = conn.Query<Person>(sql).ToList();
+    return personList;
+}
+```
 
 This is a great starter, but undoubtedly you'll have some questions after this. Like for example:
 
@@ -72,33 +76,33 @@ We'll continue assuming we are using SQL Server.
 
 While it is possible and easy to do this:
 
-    public Person GetPersonById(int id) 
+```csharp
+public Person GetPersonById(int id) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = $"SELECT * FROM Person WHERE Id={id}";
-
-            var personList = conn.Query<Person>(sql).ToList();
-
-            return personList;
-        }
+        var sql = $"SELECT * FROM Person WHERE Id={id}";
+        var personList = conn.Query<Person>(sql).ToList();
+        return personList;
     }
+}
+```
 
 It is also very bad, since you are vulnerable to sql injection. If you don't know what sql injection is you can read more about it [here](https://www.w3schools.com/sql/sql_injection.asp).
 
 But the way you can prevent this security hole is the following way:
 
-    public Person GetPersonById(int id) 
+```csharp
+public Person GetPersonById(int id) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = "SELECT * FROM Person WHERE Id=@id";
-
-            var personList = conn.Query<Person>(sql, new { id }).ToList();
-
-            return personList;
-        }
+        var sql = "SELECT * FROM Person WHERE Id=@id";
+        var personList = conn.Query<Person>(sql, new { id }).ToList();
+        return personList;
     }
+}
+```
 
 If you know enough SQL then you'll recognize that the @ sign is used to preface variables. Why would be use it here?
 
@@ -108,40 +112,42 @@ It is because dapper is helping us by turning the atomic values in our anonymous
 
 Let us use a simple model class for example purposes:
 
-    public class Person 
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public DateTime BirthDate { get; set; }
-    }
+```csharp
+public class Person 
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public DateTime BirthDate { get; set; }
+}
+```
 
 And now the actual insert statement:
 
-    public void InsertPerson(Person person) 
+```csharp
+public void InsertPerson(Person person) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = "INSERT INTO Person(Id, Name, BirthDate) VALUES(@Id, @Name, @BirthDate)";
-
-            conn.Execute(sql, person);
-        }
+        var sql = "INSERT INTO Person(Id, Name, BirthDate) VALUES(@Id, @Name, @BirthDate)";
+        conn.Execute(sql, person);
     }
+}
+```
 
 ## Update with Dapper
 
 Now the update is also pretty simple too:
 
-    public void UpdatePerson(Person person) 
+```csharp
+public void UpdatePerson(Person person) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = "UPDATE Person SET Name=@Name, BirthDate=@BirthDate) WHERE Id=@Id";
-
-            conn.Execute(sql, person);
-        }
+        var sql = "UPDATE Person SET Name=@Name, BirthDate=@BirthDate) WHERE Id=@Id";
+        conn.Execute(sql, person);
     }
+}
+```
 
 Once again, we continue using the @ notation to let Dapper create SQL variables and avoid an injection.
 
@@ -149,15 +155,16 @@ Once again, we continue using the @ notation to let Dapper create SQL variables 
 
 At this point it might be as clear as day, but here is a Delete example:
 
-    public void DeletePerson(int id) 
+```csharp
+public void DeletePerson(int id) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = "DELETE Person WHERE Id=@id";
-
-            conn.Execute(sql, new { id });
-        }
+        var sql = "DELETE Person WHERE Id=@id";
+        conn.Execute(sql, new { id });
     }
+}
+```
 
 ## Return values
 
@@ -169,15 +176,16 @@ In general, the only cases where you need the return values explicitly is when i
 
 This is an example of how to insert while also getting the inserted Id value.
 
-    public int InsertPerson(Person person) 
+```csharp
+public int InsertPerson(Person person) 
+{
+    using(var conn = new SqlConnection(ConnectionString))
     {
-        using(var conn = new SqlConnection(ConnectionString))
-        {
-            var sql = "INSERT INTO Person(person) OUTPUT INSERTED.Id VALUES (@person)";
-
-            return conn.QuerySingle<int>(sql, person);
-        }
+        var sql = "INSERT INTO Person(person) OUTPUT INSERTED.Id VALUES (@person)";
+        return conn.QuerySingle<int>(sql, person);
     }
+}
+```
 
 This last bit of SQL will get you the inserted Id if your Id column is an identity column. We also pass the generic parameter <code>int</code> to indicate that we are expecting the return value as an integer. If you have an identity column with a <code>bigint</code> type, you'd probably prefer to return a <code>long</code> type instead. A <code>System.Guid</code> type can be used for sql server type <code>uniqueidentifier</code>. Other variants exist for postgres and MySQL.
 

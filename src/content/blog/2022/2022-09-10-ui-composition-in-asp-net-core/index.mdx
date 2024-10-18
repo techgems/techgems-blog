@@ -14,7 +14,9 @@ So partial views are the simplest and longest standing way of creating UI compos
 
 The invocation of a partial view looks something like this:
 
+```razor
     <partial name="~/Views/Folder/_PartialName.cshtml" />
+```
 
 Which is great until you realize that unless you specify the entire name of the razor view, you're stuck with relative path rules, which make reusability somewhat tedious.
 
@@ -24,6 +26,7 @@ Something else that happens is that, because the `<partial>` call is generic to 
 
 View components are a way to compose your UI similarly to partial views, but unlike partial views, you can get compile time validation and custom parameters in them.
 
+```csharp
     public class CustomViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke(string message)
@@ -31,12 +34,15 @@ View components are a way to compose your UI similarly to partial views, but unl
             return View();
         }
     }
+```
 
 The call to the View function looks for the same folder the view component is in first for the razor view to render. If none is specified, it looks for "Default.cshtml".
 
 Then you execute it this way:
 
+```razor
     <vc:custom message="Text"></vc:custom>
+```
 
 View Components have compile time safeguards and offer easier composition than partial views, but they have an issue, they don't support child elements.
 
@@ -46,6 +52,7 @@ Then we have tag helpers. Tag helpers were introduced fairly early on with ASP.N
 
 You can have tag helpers like asp-controller and asp-action, that when combined in the right HTML element can have certain effects, such a link generation:
 
+```razor
     //Input
     <a asp-controller="Home" asp-action="Index">
         Click me
@@ -55,17 +62,21 @@ You can have tag helpers like asp-controller and asp-action, that when combined 
     <a href="/Home">
         Click me
     </a>
+```
 
 These kinds of tag helpers are the ones that are the most commonly implemented for the framework. They work to keep dynamic urls rather than hard-coded ones, allow the application to know when to show which validation for which field, or give a property attached to an input it's correct name for model binding.
 
 But tag helpers can also be used to create your own custom tags. The most common example of this within the framework is the environment tag helper.
     
+```razor
     <environment names="Development">
         Content will only display in Development environment.
     </environment>
+```
 
 We can create tag helpers of both kinds, and the code to define one looks something like this:
 
+```csharp
     [HtmlTargetElement("custom-button")]
     public class ModalOpenButtonTagHelper : TagHelper
     {
@@ -86,16 +97,21 @@ We can create tag helpers of both kinds, and the code to define one looks someth
             output.Content.SetHtmlContent(trimmedContent);
         }
     }
+```
 
 And it would be used like this:
 
+```razor
     <custom-button css-class="primary-red">Save</custom-button>
+```
 
 Which would then be rendered like this:
 
+```html
     <button type="button" class="primary-red">
         Save
     </button>
+```
 
 A simple tag helper like the previous one is useful since it does allow very good component composition. But it's not without it's issues. Tag helpers don't support rendering a razor template by default because their use case is too broad for that. Most of the tag helpers defined by ASP.NET Core are not full fledged components, they are helpers to properly formatting one's HTML.
 
@@ -107,7 +123,7 @@ So what if we could use the power of tag helpers of supporting child content, bu
 
 This is possible, but it requires some setup. First we need to find a way in code to render a razor View without the `View` method. There are some approaches that are relatively common of doing this for handling email templates, but through many hours of googling I found a simpler approach:
 
-
+```csharp
     [HtmlTargetElement("input-mask")]
     public class InputMaskTagHelper : TagHelper
     {
@@ -158,6 +174,7 @@ This is possible, but it requires some setup. First we need to find a way in cod
             output.Content.SetHtmlContent(content);
         }
     }
+```
 
 This is an example of a tag helper I wrote for the project I mentioned at the beginning. This is a bit of a more complex example. For the sake of brevity I will not include all the code this requires to work, but this should suffice to explain how to use a partial inside a tag helper.
 
@@ -181,61 +198,67 @@ This last specific example does not use child elements when invoked, but as we a
 
 If we wanted to implement a tag helper that does support child elements you need to modify the tag helper a little:
 
-    [HtmlTargetElement("input-mask")]
-    public class InputMaskTagHelper : TagHelper
+```csharp
+[HtmlTargetElement("input-mask")]
+public class InputMaskTagHelper : TagHelper
+{
+    private readonly IHtmlHelper _html;
+
+    public InputMaskTagHelper(IHtmlHelper html)
     {
-        private readonly IHtmlHelper _html;
-
-        public InputMaskTagHelper(IHtmlHelper html)
-        {
-            _html = html;
-        }
-
-        [HtmlAttributeNotBound]
-        [ViewContext]
-        public ViewContext ViewContext { get; set; }
-
-        /*Same as properties above code example, omitted for brevity*/
-
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-        {
-            (_html as IViewContextAware).Contextualize(ViewContext);
-
-            var childContent = await output.GetChildContentAsync();
-            var trimmedContent = childContent.GetContent().Trim();
-            
-            var model = new InputMaskModel
-            {
-                AspFor = InputExpression,
-                ElementMask = ElementMask,
-                ElementPlaceholder = ElementPlaceholder,
-                ElementValue = ElementValue,
-                ElementClass = ElementClass,
-                IdToAssignInDOM = IdForDOM,
-                ChildContent = trimmedContent
-            };
-
-            var content = await _html.PartialAsync("~/Views/TagHelpers/InputMask/InputMaskTemplate.cshtml", model);
-
-            output.Content.SetHtmlContent(content);
-        }
+        _html = html;
     }
+
+    [HtmlAttributeNotBound]
+    [ViewContext]
+    public ViewContext ViewContext { get; set; }
+
+    /*Same as properties above code example, omitted for brevity*/
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        (_html as IViewContextAware).Contextualize(ViewContext);
+
+        var childContent = await output.GetChildContentAsync();
+        var trimmedContent = childContent.GetContent().Trim();
+            
+        var model = new InputMaskModel
+        {
+            AspFor = InputExpression,
+            ElementMask = ElementMask,
+            ElementPlaceholder = ElementPlaceholder,
+            ElementValue = ElementValue,
+            ElementClass = ElementClass,
+            IdToAssignInDOM = IdForDOM,
+            ChildContent = trimmedContent
+        };
+
+        var content = await _html.PartialAsync("~/Views/TagHelpers/InputMask/InputMaskTemplate.cshtml", model);
+
+        output.Content.SetHtmlContent(content);
+    }
+}
+```
 
 You would then be able to access this HTML in it's corresponding view like this:
 
-    @model InputMaskModel;
+```razor
+@model InputMaskModel;
 
-    <span>
-		@Html.Raw(Model.ChildContent)
-	</span>
+<span>
+	@Html.Raw(Model.ChildContent)
+</span>
+```
 
 Then you can use your child accepting tag helper this way:
 
-    <input-mask>
-        Child content here:
-        <!--You can use tag helpers inside the child elements as well.-->
-        <a asp-controller="Home" asp-action="Index">Go Home</a>
-    </input-mask>
+```razor
+<input-mask>
+    Child content here:
+    <!--You can use tag helpers inside the child elements as well.-->
+    <a asp-controller="Home" asp-action="Index">Go Home</a>
+</input-mask>
+```
 
 This allows very expressive UI composition without derailing from an MVC centric approach to declaring UI. You could even combine this with a library such as Petite Vue or AlpineJS and you can add all kinds of interactivity with JS without buying in entirely into the complexity of maintaining a node environment and dependencies.
 
@@ -257,7 +280,9 @@ If we are to compare modes of render with everything else in comparisson other t
 
 The syntax is something like this:
 
-        <component type="typeof(AppController)" render-mode="ServerPrerendered" /> 
+```razor
+<component type="typeof(AppController)" render-mode="ServerPrerendered" /> 
+```
 
 This is by far one of the most flexible ways of composing UI in an MVC app, because you get full components. You get no children inside the MVC scope and the composition is handled entirely in Blazor code.
 

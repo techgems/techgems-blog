@@ -40,52 +40,56 @@ These libraries are important to give dapper the basic operations you will need 
 
 This is what a repository written in dapper looks like with Dapper Contrib
 
-    public List<Person> GetAll()
+```csharp
+public List<Person> GetAll()
+{
+    using (IDbConnection conn = new SqlConnection(ConnectionString))
     {
-        using (IDbConnection conn = new SqlConnection(ConnectionString))
-        {
-            return conn.Query<Person>("SELECT * FROM Person").AsList();
-        }
+        return conn.Query<Person>("SELECT * FROM Person").AsList();
     }
+}
 
-    public Person Create(Person person)
+public Person Create(Person person)
+{
+    using (IDbConnection conn = new SqlConnection(ConnectionString))
     {
-        using (IDbConnection conn = new SqlConnection(ConnectionString))
-        {
-            person.Id = Convert.ToInt32(conn.Insert(person));
-            return person;
-        }
+        person.Id = Convert.ToInt32(conn.Insert(person));
+        return person;
     }
+}
 
-    public Person Update(Person person)
+public Person Update(Person person)
+{
+    using (IDbConnection conn = new SqlConnection(ConnectionString))
     {
-        using (IDbConnection conn = new SqlConnection(ConnectionString))
-        {
-            conn.Update(person);
-            return person;
-        }
+        conn.Update(person);
+        return person;
     }
+}
 
-    public void Delete(int personId)
+public void Delete(int personId)
+{
+    using (IDbConnection conn = new SqlConnection(ConnectionString))
     {
-        using (IDbConnection conn = new SqlConnection(ConnectionString))
-        {
-            conn.Delete(new Person { Id = personId });
-        }
+        conn.Delete(new Person { Id = personId });
     }
+}
+```
 
 The model "Person" looks like this:
 
-    [Table("Person")]
-    public class Person
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public int CompanyId { get; set; }
-    }
+```csharp
+[Table("Person")]
+public class Person
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+    public int CompanyId { get; set; }
+}
+```
 
 It is just a simple class that is mapped to. The [Table] decorator can be used on both Dapper SimpleCRUD and Dapper Contrib. In this small exposition we are assuming the use of SQL Server, so we are also assuming that your table names are all in Pascal casing. That makes it easy to not have to define any mappings and just have the actual name of the field be also the name for the properties in the models.
 
@@ -109,24 +113,25 @@ Normally the default that is used in asp.net core applications is validations of
 
 In that last case, if our database validations are complex, everything will be complex. Fluent Validations come to solve this problem.
 
-    public class PersonCreateValidator : AbstractValidator<PersonCreateRequest>
+```csharp
+public class PersonCreateValidator : AbstractValidator<PersonCreateRequest>
+{
+    private readonly IPersonRepository Repository;
+
+    public PersonCreateValidator(IPersonRepository repository)
     {
-        private readonly IPersonRepository Repository;
-
-        public PersonCreateValidator(IPersonRepository repository)
+        Repository = repository;
+        RuleFor(x => x.Email).EmailAddress().WithMessage("The email is not in the right format.");
+        RuleFor(x => x.Email).Custom((email, context) =>
         {
-            Repository = repository;
-
-            RuleFor(x => x.Email).EmailAddress().WithMessage("The email is not in the right format.");
-            RuleFor(x => x.Email).Custom((email, context) =>
+            if (!Repository.IsEmailUnique(email))
             {
-                if (!Repository.IsEmailUnique(email))
-                {
-                    context.AddFailure("The email is not unique.");
-                }
-            });
-        }
+                context.AddFailure("The email is not unique.");
+            }
+        });
     }
+}
+```
 
 Fluent validations are not specified in the request class. So we don't need to import data access somewhere we don't need it. We can write whatever custom rules for our request classes and we can validate everything we need by using the presets that come with Fluent Validations.
 
@@ -138,30 +143,31 @@ Services
 
 Finally, we bind everything together with a service class:
 
-    public class PersonService : IPersonService
+```csharp
+public class PersonService : IPersonService
+{
+    private readonly IPersonRepository PersonRepository;
+    private readonly IPersonMapper PersonMapper;
+
+    public PersonService(IPersonRepository repository, IPersonMapper mapper)
     {
-        private readonly IPersonRepository PersonRepository;
-        private readonly IPersonMapper PersonMapper;
-
-        public PersonService(IPersonRepository repository, IPersonMapper mapper)
-        {
-            PersonRepository = repository;
-            PersonMapper = mapper;
-        }
-
-        public PersonModel Create(PersonCreateRequest request)
-        {
-            var entity = PersonRepository.Create(PersonMapper.MapCreateRequestToEntity(request));
-            return PersonMapper.MapEntityToModel(entity);
-        }
-
-        public List<PersonModel> GetAll()
-        {
-            var PersonList = PersonRepository.GetAll();
-
-            return PersonMapper.MapEntityListToModelList(PersonList);
-        }
+        PersonRepository = repository;
+        PersonMapper = mapper;
     }
+
+    public PersonModel Create(PersonCreateRequest request)
+    {
+        var entity = PersonRepository.Create(PersonMapper.MapCreateRequestToEntity(request));
+        return PersonMapper.MapEntityToModel(entity);
+    }
+
+    public List<PersonModel> GetAll()
+    {
+        var PersonList = PersonRepository.GetAll();
+        return PersonMapper.MapEntityListToModelList(PersonList);
+    }
+}
+```
 
 Here we use a mapper class to map from request object to entity, as well as to map an entity to a response model. In the service class we handle the call to whatever service we may need, database operations, sending of emails, loading data in a cache or writing to redis-like stores or even consuming any service of any kind.
 
@@ -173,14 +179,16 @@ So for this part we are using a custom exception handling middleware. This will 
 
 This is an excerpt of the configuration in the startup class where we set up the exception middleware.
 
-    if(env.IsDevelopment())
-    {
-        app.UseMiddleware(typeof(DevelopmentExceptionMiddleware));
-    }
-    else
-    {
-        app.UseMiddleware(typeof(GlobalExceptionMiddleware));
-    }
+```csharp
+if(env.IsDevelopment())
+{
+    app.UseMiddleware(typeof(DevelopmentExceptionMiddleware));
+}
+else
+{
+    app.UseMiddleware(typeof(GlobalExceptionMiddleware));
+}
+```
 
 The function IsDevelopment is one given to us by ASP.NET Core. It uses the environment variable called "ASPNETCORE_ENVIRONMENT" that is setup in the launchSettings.json file. If the value is "development", then the if statement will be true.
 
@@ -188,42 +196,54 @@ We are using here two exception handling middleware classes: *DevelopmentExcepti
 
 DevelopmentExceptionMiddleware
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception ex)
-    {
-        var returnedErrorMessage = ex.Message;
-        var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+```csharp
+private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+{
+    var returnedErrorMessage = ex.Message;
+    var code = HttpStatusCode.InternalServerError; // 500 if unexpected
 
-        if (ex is NotFoundException) code = HttpStatusCode.NotFound;
-        else if (ex is UnauthorizedException) code = HttpStatusCode.Unauthorized;
-
-        var result = JsonConvert.SerializeObject(new { error = returnedErrorMessage });
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
-        return context.Response.WriteAsync(result);
-    }
+    if (ex is NotFoundException) 
+        code = HttpStatusCode.NotFound;
+    else if (ex is UnauthorizedException) 
+        code = HttpStatusCode.Unauthorized;
+    
+    var result = JsonConvert.SerializeObject(new { error = returnedErrorMessage });
+    
+    context.Response.ContentType = "application/json";
+    context.Response.StatusCode = (int)code;
+    
+    return context.Response.WriteAsync(result);
+}
+```
 
 Here we are taking every single exception that is not caught by the application and handling it. We are utilizing the unfiltered error message for development, which is a proper thing to do.
 
 Now for GlobalExceptionMiddleware
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+```csharp
+private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+{
+    var returnedErrorMessage = ex.Message;
+    var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+    
+    if (ex is NotFoundException) 
+        code = HttpStatusCode.NotFound;
+    else if (ex is UnauthorizedException) 
+        code = HttpStatusCode.Unauthorized;
+    
+    if(code == HttpStatusCode.InternalServerError)
     {
-        var returnedErrorMessage = ex.Message;
-        var code = HttpStatusCode.InternalServerError; // 500 if unexpected
-
-        if (ex is NotFoundException) code = HttpStatusCode.NotFound;
-        else if (ex is UnauthorizedException) code = HttpStatusCode.Unauthorized;
-
-        if(code == HttpStatusCode.InternalServerError)
-        {
-            returnedErrorMessage = "A server error has occurred. If this situation continues please contact the administrator.";
-        }
-
-        var result = JsonConvert.SerializeObject(new { error = returnedErrorMessage });
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
-        return context.Response.WriteAsync(result);
+        returnedErrorMessage = "A server error has occurred. If this situation continues please contact the administrator.";
     }
+    
+    var result = JsonConvert.SerializeObject(new { error = returnedErrorMessage });
+    
+    context.Response.ContentType = "application/json";
+    context.Response.StatusCode = (int)code;
+    
+    return context.Response.WriteAsync(result);
+}
+```
 
 We have an extra if statement that allows us to react properly when there is an uncontrolled exception. That way we don't show the user information the don't require.
 
@@ -233,39 +253,41 @@ Finally we have the configuration for swagger. Swagger is a great tool for docum
 
 The configuration required once using this package is a fairly simple one. You add the following lines to your configureServices function:
 
-    public void ConfigureServices(IServiceCollection services)
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddSwaggerGen(c =>
     {
-        services.AddSwaggerGen(c =>
+        c.SwaggerDoc("v1", new OpenApiInfo()
         {
-            c.SwaggerDoc("v1", new OpenApiInfo()
+            Version = "v1",
+            Title = "API",
+            Description = "Clean Architecture Boilerplate API",
+            Contact = new OpenApiContact()
             {
-                Version = "v1",
-                Title = "API",
-                Description = "Clean Architecture Boilerplate API",
-                Contact = new OpenApiContact()
-                {
-                    Name = "Carlos Jimenez",
-                    Email = "carlos@techgems.net"
-                },
-                License = new OpenApiLicense()
-                {
-                    Name = "MIT"
-                },
-            });
+                Name = "Carlos Jimenez",
+                Email = "carlos@techgems.net"
+            },
+            License = new OpenApiLicense()
+            {
+                Name = "MIT"
+            },
         });
-
-        //... More config goes here
-    }
+    });
+    //... More config goes here
+}
+```
 
 And right after you use the following lines in your configure function:
 
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Clean Architecture Boilerplate API.");
-    });
+```csharp
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Clean Architecture Boilerplate API.");
+});
+```
 
 I like to call this only for development, since I don't normally want to expose my API documentation to the public, but your use case may vary.
-
 
 </div>

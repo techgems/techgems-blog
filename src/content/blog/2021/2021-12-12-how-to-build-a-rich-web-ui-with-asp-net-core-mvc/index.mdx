@@ -35,13 +35,15 @@ We don't want jQuery either, since we don't want refactoring nightmares triggeri
 
 [AlpineJS](https://alpinejs.dev/) is a small JS library that seeks to replace jQuery as the de-facto ruler in server rendered apps that need a little bit of client interaction. When using it, you're still using Javascript, but it's a declarative, not imperative, which will reduce the amount of JS you write for modals, custom dropdowns, toasts or any other interaction that needs to live in the client only.
 
-    <div x-data="{ open: false }">
-        <button @click="open = true">Expand</button>
+```razor
+<div x-data="{ open: false }">
+    <button @click="open = true">Expand</button>
  
-        <span x-show="open">
-            Content...
-        </span>
-    </div>
+    <span x-show="open">
+        Content...
+    </span>
+</div>
+```
 
 Any state that you need into your HTML you can put it inside an x-data attribute, you can use a JS function or a plain inline object. It's great because this way it's very easy to create tag helpers with HTML that has interactions out of the box in the client.
 
@@ -51,22 +53,26 @@ AlpineJS is great, but it offers little in the way of avoiding the necessity of 
 
 Meet [HTMX](https://htmx.org/), HTMX is a tool that allows you to declaratively allow HTML elements to send an asynchronous request. Meaning that your plain-old MVC form can fetch partial HTML and inject it rather than a full refresh each time.
 
-    <form hx-post="/postRoute" hx-swap="outerHTML">
-        <input name="id" type="text" />
-        <button type="submit">Submit form with Ajax</button>
-    </form>
+```alpinejs
+<form hx-post="/postRoute" hx-swap="outerHTML">
+    <input name="id" type="text" />
+    <button type="submit">Submit form with Ajax</button>
+</form>
+```
 
 The previous example will turn a form request into an asynchronous POST request, which will replace the element with the result of the request. When paired with:
 
-    [HttpPost]
-    [Route("/postRoute")]
-    public async Task<IActionResult> PostRoute([FromBody] int id)
-    {
-        //Validation and processing here.
+```csharp    
+[HttpPost]
+[Route("/postRoute")]
+public async Task<IActionResult> PostRoute([FromBody] int id)
+{
+    //Validation and processing here.
 
-        //Use Partial View, not full HTML page.
-        return PartialView("../Partials/Example", id);
-    }
+    //Use Partial View, not full HTML page.
+    return PartialView("../Partials/Example", id);
+}
+```
 
 You can very powerfully add client to server interactions that don't demand JS, but that leverage the server's capacity to pre-render your HTML.
 

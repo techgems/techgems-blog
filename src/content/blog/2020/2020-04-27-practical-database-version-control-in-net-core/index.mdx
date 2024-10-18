@@ -23,23 +23,25 @@ Entity Framework allows you to turn a C# entity class into a table using convent
 
 A simple class like this in C#:
    
-    public class Customer
-    {
-        [Key]
-        public int Id { get; set; }
+```csharp
+public class Customer
+{
+    [Key]
+    public int Id { get; set; }
 
-        [StringLength(50)]
-        public string Name { get; set; }
-
-        [StringLength(12)]
-        public string PhoneNumber { get; set; }
-
-        public int Age { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public DateTime UpdateDate { get; set; }
-    }
+    [StringLength(50)]
+    public string Name { get; set; }
+    
+    [StringLength(12)]
+    public string PhoneNumber { get; set; }
+    
+    public int Age { get; set; }
+    
+    public DateTime CreationDate { get; set; }
+    
+    public DateTime UpdateDate { get; set; }
+}
+```
 
 Can produce a database table with matching names and types. Other conventions and mechanisms can be used to add further customization and control over the generated SQL. 
 
@@ -61,7 +63,9 @@ The idea behind database first is that you make your changes in SQL with whateve
 
 In Entity Framework Core, working this way is possible. It comes with caveats, but it is possible. You can use the command:
 
-    `Scaffold-DbContext 'Your Connection String Here' Microsoft.EntityFrameworkCore.SqlServer`
+```terminal
+    Scaffold-DbContext 'Your Connection String Here' Microsoft.EntityFrameworkCore.SqlServer
+```
 
 In your package manager console and that will generate all entity framework files into the project you ran the command as.
 
@@ -75,19 +79,20 @@ I've used this method alongside Entity Framework Core migrations. One annoying t
 
 Entity Framework migrations can be used with plain SQL written by you. See the example below.
 
-    public partial class YourMigrationName : Migration
+```csharp
+public partial class YourMigrationName : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.Sql(@"Your SQL Here"
-            );
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.Sql(@"More SQL over here");
-        }
+        migrationBuilder.Sql(@"Your SQL Here");
     }
+
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.Sql(@"More SQL over here");
+    }
+}
+```
 
 The other downside is that your team can be tempted into using code first migrations (since it still is a possibility), and thus lack of control of your SQL as well as synchronization problems among your team. Another problem I encountered with this is that you are generating as many files as you have database tables, than can easily lead to compile errors if many database objects change names. These errors will then not let you run migrations because for EF Core migrations to run, you application needs to compile. This is not impossible to solve, but it is very very tedious to deal with.
 
