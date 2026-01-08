@@ -2,72 +2,84 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { library, icon } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import HomeFooter from '../components/HomeFooter.astro';
-
-// Declare all the icons you plan on using
-library.add(faGithub, faLinkedin, faEnvelope);
-
-const linkedInIcon = icon(faLinkedin);
-const emailIcon = icon(faEnvelope);
-const githubIcon = icon(faGithub);
 ---
 
 <!doctype html>
-
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<link rel="stylesheet" href="/css/main.css" />
 	</head>
 	<body>
 		<Header />
-		<main class="gradient-bg text-white min-h-screen h-full flex flex-col">
-			<div class="flex flex-1 ">
-			  <section class="flex justify-center max-w-lg w-full items-center text-center m-auto">
-				<div class="text-center mx-3 md:mx-0">
-				  <h1 class="my-4 text-2xl md:text-3xl font-extrabold font-header">Carlos Jimenez</h1>
-				  <h2 class="my-2 text-md md:text-lg font-light font-body">
-					Full Stack Web Developer, Freelancer and Writer of the Tech Gems Blog.
-				  </h2>
-				  <ul class="mt-8">
-					<li class="inline-block mx-2">
-					  <a href="https://github.com/techgems" class="text-3xl shadow-none hover:text-red-400">
-						<Fragment set:html={githubIcon.html} />
-					  </a>
-					</li>
-					<li class="inline-block mx-2">
-					  <a href="https://www.linkedin.com/in/carlos-jimenez-61a926b7/" class="text-3xl shadow-none hover:text-red-400">
-						<Fragment set:html={linkedInIcon.html} />
-					  </a>
-					</li>
-					<li class="inline-block mx-2 text-3xl">
-					  <a href="mailto:cjimenezber@gmail.com" class="text-3xl shadow-none hover:text-red-400">
-						<Fragment set:html={emailIcon.html} />
-					  </a>
-					</li>
-				  </ul>
+
+		<section class="circuit-background text-white">
+			<div class="py-16 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3">
+				<img src="/images/profile.png" alt="Carlos Photo" class="col-span-1 rounded-l-2xl! rounded-r-none!" />
+				<div class="col-span-2 text-[3.35rem] bg-black/20 backdrop-blur-md rounded-r-2xl p-8 mx-auto font-light flex flex-col justify-center">
+					<div>
+						I'm <span class="text-sky-500 font-semibold">Carlos</span> - Builder of online platforms. I take your app ideas from <span class="text-sky-600 font-light">Concept</span> to <span class="text-sky-400 font-bold">Reality</span>
+					</div>
+					<div class="flex gap-2 justify-start mt-8">
+						<span class="bg-cyan-900 rounded-md text-2xl font-normal text-white px-4 py-2 hover:bg-cyan-500">
+							<a href="/contact">Let's Talk</a>
+						</span>
+						<span class="bg-cyan-900 rounded-md text-2xl font-normal text-white px-4 py-2 hover:bg-cyan-500">
+							<a href="/resume">View Resume</a>
+						</span>
+					</div>
 				</div>
-			  </section>
 			</div>
-		  </main>
+		</section>
+		<section class="prose-lg mx-auto max-w-7xl my-8 px-4 sm:px-6 lg:px-8">
+			<h2 class="text-cyan-800 font-semibold border-cyan-500 border-b-4 pb-4">Services I Offer</h2>
+			<div class="mt-4 grid grid-cols-3 lg:grid-cols-6 gap-2">
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					Custom Web Application Development
+				</div>
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					Technical Leadership and Team Coordination
+				</div>
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					Cloud Architecture Design and Implementation (AWS, Azure)
+				</div>
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					API Development and Integration
+				</div>
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					Legacy System Modernization and Migration to Cloud
+				</div>
+				<div class="rounded-lg bg-cyan-700 text-white p-4 mt-4">
+					Frontend Development with React and Typescript
+				</div>
+			</div>
+		</section>
+
+		<section class="prose-lg mx-auto max-w-7xl my-8 px-4 sm:px-6 lg:px-8">				
+			<h2 class="text-cyan-800 font-semibold border-cyan-500 border-b-4 pb-4">About Me</h2>
+			<p class="mt-4">
+				I'm Carlos Jimenez and I'm a Software Engineer with 10+ years of experience, primarily in building applications for the education industry. I excel primarily in <span class="font-semibold">C#</span>, <span class="font-semibold">ASP.NET Core</span>, <span class="font-semibold">ASP.NET Core</span>, <span class="font-semibold">React</span> and <span class="font-semibold">Typescript</span>, but I have worked with several other stacks as needed.
+			</p>
+			<p>
+				I have had the chance to build many projects from scratch using Cloud native architectures, as well as migrating older systems into modern cloud-based solutions. I can build solid and reliable systems in AWS and Azure. I believe that good engineering is all about understanding tradeoffs and finding the best fit for a specific scenario. I have had ample experience leading teams and coordinating the efforts of both developers and designers in order to ensure a final product that is both aesthetically pleasing and functionally sound.
+			</p>
+			<p>
+				I'm also an author of multiple open-source libraries as I have encountered challenges that would benefit from solutions not previously available.
+			</p>
+		</section>
+
+		<section class="prose-lg mx-auto max-w-7xl my-8 px-4 sm:px-6 lg:px-8">
+			<h2 class="text-cyan-800 font-semibold border-cyan-500 border-b-4 pb-4">Get In Touch</h2>
+			<p class="mt-4">
+				If you're interested in working together or have any questions, feel free to contact me. 
+			</p>
+			<div class="mt-4 flex justify-center">
+				<span class="bg-cyan-900 rounded-md text-2xl font-normal text-white px-4 py-2 hover:bg-cyan-500">
+					<a class="text-white no-underline" href="/contact">Contact me</a>
+				</span>
+			</div>
+		</section>
 		<HomeFooter />
 	</body>
 </html>
-
-<style is:global>
-	/* Declare a custom CSS class to make the icon look right */
-	.svg-inline--fa {
-	  overflow: visible;
-	  box-sizing: content-box;
-	  display: inline-block;
-	  height: 1em;
-	  vertical-align: -0.125em;
-	}
-
-	.gradient-bg {
-		background: rgb(193,0,0);
-		background: radial-gradient(circle, rgba(193,0,0,1) 0%, rgba(38,0,0,1) 79%);
-	}
-</style>

@@ -1,0 +1,10 @@
+---
+const { skillName, image } = Astro.props;
+import { Image } from 'astro:assets';
+---
+<div class="">
+    <div class="h-full flex items-center justify-center">
+        <Image src={image} alt={skillName} width={150} height={150} class="h-40 m-auto" />
+    </div>
+    <h5 class="text-lg font-semibold mb-2">{skillName}</h5>
+</div>
