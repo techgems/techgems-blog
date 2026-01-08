@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Tridius() {
+export function Tridius() : React.JSX.Element {
     return (
         <div className="prose">
             <p>

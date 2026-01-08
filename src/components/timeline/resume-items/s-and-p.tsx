@@ -1,6 +1,6 @@
 import React from "react";
 
-export function SandP() {
+export function SandP() : React.JSX.Element{
     return (
         <div className="prose">
             <p>

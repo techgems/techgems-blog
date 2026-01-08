@@ -1,6 +1,6 @@
 import React from "react";
 
-export function EduTech() {
+export function EduTech() : React.JSX.Element {
     return (
         <div className="prose">
           <div>

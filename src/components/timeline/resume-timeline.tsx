@@ -7,7 +7,7 @@ import { Tridius } from "./resume-items/tridius";
 import { Tech9 } from "./resume-items/tech9";
 import { FirstFactory } from "./resume-items/first-factory";
 
-export default function ResumeTimeline() {
+export default function ResumeTimeline() : React.JSX.Element {
   const data = [
     {
       company: "Tech9",

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Intel() {
+export function Intel() : React.JSX.Element {
   return (
     <div className="prose">
       <p>

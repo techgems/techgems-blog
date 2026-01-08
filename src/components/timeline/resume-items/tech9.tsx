@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Tech9() {
+export function Tech9() : React.JSX.Element{
     return (
         <div className="prose">
           <div>

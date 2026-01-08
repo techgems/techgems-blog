@@ -1,6 +1,6 @@
 import React from "react";
 
-export function FirstFactory() {
+export function FirstFactory() : React.JSX.Element {
     return (
         <div className="prose">
           <p>
