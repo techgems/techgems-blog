@@ -19,12 +19,12 @@ const githubIcon = icon(faGithubSquare);
 >
   <section class="max-w-3xl mx-auto my-16 px-4 sm:px-6 lg:px-8">
     <div class="prose">
-      <h3 class="text-cyan-700 text-6xl">Get in touch</h3>
+      <h3 class="text-cyan-700 text-4xl sm:text-5xl lg:text-6xl">Get in touch</h3>
       <p>
         Whether you have a question, a project idea, or just want to say hello,
         feel free to reach out!
       </p>
-      <form action="https://api.web3forms.com/submit" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-2">
+      <form action="https://api.web3forms.com/submit" method="POST" class="mx-auto mt-8 sm:mt-12 max-w-xl">
         <input
           type="hidden"
           name="access_key"
@@ -57,10 +57,10 @@ const githubIcon = icon(faGithubSquare);
     </div>
 
     <div class="mt-16 prose">
-      <h3 class="text-cyan-700 text-4xl">Other Ways to Connect</h3>
-      <div class="flex gap-4">
+      <h3 class="text-cyan-700 text-3xl sm:text-4xl">Other Ways to Connect</h3>
+      <div class="flex flex-wrap items-center gap-2 sm:gap-4">
         <a
-          class="text-black mx-2 w-28 p-3 block"
+          class="text-black mx-1 sm:mx-2 w-20 sm:w-24 lg:w-28 p-2 sm:p-3 block"
           href="https://github.com/techgems"
           target="_blank"
           rel="noopener"
@@ -68,7 +68,7 @@ const githubIcon = icon(faGithubSquare);
           <Fragment set:html={githubIcon.html} />
         </a>
         <a
-          class="text-cyan-500 mx-2 w-28 p-3 block"
+          class="text-cyan-500 mx-1 sm:mx-2 w-20 sm:w-24 lg:w-28 p-2 sm:p-3 block"
           href="https://www.linkedin.com/in/carlos-jimenez-7b4a4a1a/"
           target="_blank"
           rel="noopener"

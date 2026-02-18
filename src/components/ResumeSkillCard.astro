@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 ---
 <div class="">
     <div class="h-full flex items-center justify-center">
-        <Image src={image} alt={skillName} width={150} height={150} class="h-40 m-auto" />
+        <Image src={image} alt={skillName} width={150} height={150} class="h-24 sm:h-32 md:h-40 w-auto m-auto" />
     </div>
-    <h5 class="text-lg font-semibold mb-2">{skillName}</h5>
+    <h5 class="text-base sm:text-lg font-semibold mb-2 text-center">{skillName}</h5>
 </div>

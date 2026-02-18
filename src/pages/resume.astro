@@ -28,8 +28,8 @@ import SvelteImg from '../images/skills/svelte.svg';
   title="Resume"
   description="Carlos's Resume - Full Stack Developer specializing in modern web technologies."
 >
-    <section class="prose max-w-7xl px-4 sm:px-6 lg:px-8 mt-20 mx-auto">
-        <h1 class="text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Summary</h1>
+    <section class="prose max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Summary</h1>
         <p class="text-lg text-gray-700 dark:text-gray-300">
             I'm Carlos Jimenez. I'm a Software Engineer with over <strong>10 years of experience</strong>. I excel primarily in <strong>C#</strong>, <strong>ASP.NET Core</strong>, <strong>React</strong> and <strong>Typescript</strong>, but I have worked with other stacks in the past, such as <strong>NextJS</strong> and <strong>Laravel</strong>.
         </p>
@@ -37,12 +37,12 @@ import SvelteImg from '../images/skills/svelte.svg';
             I have had the chance to build many projects from scratch using Cloud native architectures, as well as migrating older systems into modern cloud-based solutions. I can build solid and reliable systems in <strong>AWS</strong> and <strong>Azure</strong>. I believe that good engineering is all about understanding tradeoffs and finding the best fit for a specific scenario. I have had ample experience leading teams and coordinating the efforts of both developers and designers in order to ensure a final product that is both aesthetically pleasing and functionally sound.
         </p>
     </section>
-    <section class="max-w-7xl px-4 sm:px-6 lg:px-8 mt-20 mx-auto">
-        <h1 class="text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Skills</h1>
+    <section class="max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Skills</h1>
 
         <div class="mb-8">
-            <h3 class="text-2xl font-semibold mb-6">Primary Stack</h3>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-6">Primary Stack</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
                 <ResumeSkillCard skillName="C#" image={CSharpImg} />
                 <ResumeSkillCard skillName=".NET Core" image={DotNetImg} />
                 <ResumeSkillCard skillName="React.js" image={ReactImg} />
@@ -53,8 +53,8 @@ import SvelteImg from '../images/skills/svelte.svg';
         </div>
 
         <div class="mt-12 mb-8">
-            <h3 class="text-2xl font-semibold mb-6">Databases</h3>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-6">Databases</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
                 <ResumeSkillCard skillName="SQL Server" image={SqlServerImg} />
                 <ResumeSkillCard skillName="PostgreSQL" image={PostgresImg} />
                 <ResumeSkillCard skillName="DynamoDB" image={DynamoDbImg} />
@@ -62,8 +62,8 @@ import SvelteImg from '../images/skills/svelte.svg';
         </div>
 
         <div class="mt-12 mb-8">
-            <h3 class="text-2xl font-semibold mb-6">Cloud and DevOps</h3>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-6">Cloud and DevOps</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
                 <ResumeSkillCard skillName="AWS" image={AwsImg} />
                 <ResumeSkillCard skillName="Azure" image={AzureImg} />
                 <ResumeSkillCard skillName="Cloudflare" image={CloudflareImg} />
@@ -72,8 +72,8 @@ import SvelteImg from '../images/skills/svelte.svg';
         </div>
 
         <div class="mt-12 mb-8">
-            <h3 class="text-2xl font-semibold mb-6">Other Skills</h3>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-6">Other Skills</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-8">
                 <ResumeSkillCard skillName="HTML5" image={Html5Img} />
                 <ResumeSkillCard skillName="CSS3" image={Css3Img} />
                 <ResumeSkillCard skillName="Git" image={GitImg} />
@@ -82,7 +82,7 @@ import SvelteImg from '../images/skills/svelte.svg';
         </div>
     </section>
     <section class="my-8">
-        <h1 class="max-w-7xl px-4 sm:px-6 lg:px-8 mt-20 mx-auto text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Work Experience</h1>
+        <h1 class="max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 mx-auto text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-gray-100 mb-4">Work Experience</h1>
         <ResumeTimeline />
     </section>
 </Layout>
