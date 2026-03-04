@@ -54,7 +54,7 @@ AlpineJS is great, but it offers little in the way of avoiding the necessity of 
 
 Meet [HTMX](https://htmx.org/), HTMX is a tool that allows you to declaratively allow HTML elements to send an asynchronous request. Meaning that your plain-old MVC form can fetch partial HTML and inject it rather than a full refresh each time.
 
-```alpinejs
+```html
 <form hx-post="/postRoute" hx-swap="outerHTML">
     <input name="id" type="text" />
     <button type="submit">Submit form with Ajax</button>
