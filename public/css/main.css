@@ -1,6 +1,6 @@
 .circuit-background {
-    background-size: 500px 500px;
+    background-image: url('/images/HeroSectionBG.svg');
+    background-size: cover;
     background-position: center;
-    background-color: #270000;
-    background-image: url('/images/circuit-board.svg');
+    background-repeat: no-repeat;
 }

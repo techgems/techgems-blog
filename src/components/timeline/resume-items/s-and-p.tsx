@@ -2,7 +2,7 @@ import React from "react";
 
 export function SandP() : React.JSX.Element{
     return (
-        <div className="prose">
+        <div className="prose prose-invert">
             <p>
               I worked in S&P Global primarily leading an initiative to renovate the way content for financial assets pages were displayed. The existing solution at the time of my arrival used a complex, non-developer friendly configuration file and a 3rd party solution that would take that information and would generate a page for said financial asset and price data.
             </p>

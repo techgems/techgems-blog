@@ -2,7 +2,7 @@ import React from "react";
 
 export function Tech9() : React.JSX.Element{
     return (
-        <div className="prose">
+        <div className="prose prose-invert">
           <div>
             <p>
               In this position I have worked with different stacks and teams according to necessity. For about a year and a half, I worked on a Google Maps solution to allow users to find potential learning groups in their area, this application was called QuickReg. I also worked in an Azure Functions solution for a data migration that was hard to orchestrate and required deep understanding of Anthology API. I also worked in an application migration from ASP.NET Core 2.2 to .NET 8. Finally, I worked once more in the QuickReg app in rewriting the app in NextJS and decoupling it from a legacy API, instead moving to use Microsoft 365’s CRM.

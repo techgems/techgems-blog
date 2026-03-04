@@ -2,7 +2,7 @@ import React from "react";
 
 export function EduTech() : React.JSX.Element {
     return (
-        <div className="prose">
+        <div className="prose prose-invert">
           <div>
             <p>
               As the founding developer for EduTech de Centroamerica's software division, I began work on Train Me, a SaaS B2B LMS system. I later took on more roles, both technical and managerial, as the company grew.

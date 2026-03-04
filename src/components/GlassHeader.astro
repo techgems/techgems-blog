@@ -1,0 +1,131 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faGithub, faLinkedin, faEnvelope);
+
+const linkedInIcon = icon(faLinkedin);
+const emailIcon = icon(faEnvelope);
+const githubIcon = icon(faGithub);
+---
+
+<!-- Floating wrapper: fixed at top center with padding so the pill doesn't touch edges -->
+<div class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
+	<!-- Glass pill navbar -->
+	<nav class="relative w-full max-w-3xl rounded-full bg-white/10 backdrop-blur-xl backdrop-saturate-150 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] px-4 sm:px-6 py-2.5 flex items-center justify-between">
+
+		<!-- Hamburger button (mobile only) -->
+		<button
+			id="glass-hamburger-btn"
+			type="button"
+			class="md:hidden text-white/90 p-1.5 rounded-full hover:bg-white/15 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/20"
+			aria-label="Toggle navigation menu"
+			aria-expanded="false"
+		>
+			<svg id="glass-hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+			</svg>
+			<svg id="glass-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+			</svg>
+		</button>
+
+		<!-- Nav links (desktop) -->
+		<div class="hidden md:flex items-center gap-1 text-sm text-white/90" id="glass-nav-links">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/resume">Resume</HeaderLink>
+			<HeaderLink href="/open-source">Open Source</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/contact">Contact</HeaderLink>
+		</div>
+
+		<!-- Divider (desktop only) -->
+		<div class="hidden md:block w-px h-5 bg-white/20"></div>
+
+		<!-- Social icons -->
+		<div class="flex items-center gap-2 text-white/80">
+			<HeaderLink class="w-10 hover:text-white transition-colors duration-200" href="https://www.linkedin.com/in/carlos-jimenez-61a926b7/" target="_blank">
+				<Fragment set:html={linkedInIcon.html} />
+			</HeaderLink>
+			<HeaderLink class="w-10 hover:text-white transition-colors duration-200" href="https://github.com/techgems" target="_blank">
+				<Fragment set:html={githubIcon.html} />
+			</HeaderLink>
+			<HeaderLink class="w-10 hover:text-white transition-colors duration-200" href="mailto:cjimenezber@gmail.com" target="_blank">
+				<Fragment set:html={emailIcon.html} />
+			</HeaderLink>
+		</div>
+	</nav>
+
+	<!-- Mobile dropdown: rendered below the pill, within the same centered wrapper -->
+	<div
+		id="glass-mobile-menu"
+		class="hidden absolute top-full left-4 right-4 mt-2 flex-col gap-1 py-3 px-2 text-sm text-white/90 md:hidden rounded-2xl bg-white/10 backdrop-blur-xl backdrop-saturate-150 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+	>
+		<HeaderLink class="block px-4 py-2 rounded-xl hover:bg-white/15 transition-colors duration-200" href="/">Home</HeaderLink>
+		<HeaderLink class="block px-4 py-2 rounded-xl hover:bg-white/15 transition-colors duration-200" href="/resume">Resume</HeaderLink>
+		<HeaderLink class="block px-4 py-2 rounded-xl hover:bg-white/15 transition-colors duration-200" href="/open-source">Open Source</HeaderLink>
+		<HeaderLink class="block px-4 py-2 rounded-xl hover:bg-white/15 transition-colors duration-200" href="/blog">Blog</HeaderLink>
+		<HeaderLink class="block px-4 py-2 rounded-xl hover:bg-white/15 transition-colors duration-200" href="/contact">Contact</HeaderLink>
+	</div>
+</div>
+
+<script is:inline>
+	function setupGlassHamburger() {
+		const btn = document.getElementById('glass-hamburger-btn');
+		const menu = document.getElementById('glass-mobile-menu');
+		if (!btn) return;
+
+		// Remove old listener by cloning
+		const newBtn = btn.cloneNode(true);
+		btn.parentNode?.replaceChild(newBtn, btn);
+
+		newBtn.addEventListener('click', () => {
+			const isOpen = menu?.classList.contains('flex');
+			if (isOpen) {
+				menu?.classList.remove('flex');
+				menu?.classList.add('hidden');
+				document.getElementById('glass-hamburger-icon')?.classList.remove('hidden');
+				document.getElementById('glass-close-icon')?.classList.add('hidden');
+				newBtn.setAttribute('aria-expanded', 'false');
+			} else {
+				menu?.classList.remove('hidden');
+				menu?.classList.add('flex');
+				document.getElementById('glass-hamburger-icon')?.classList.add('hidden');
+				document.getElementById('glass-close-icon')?.classList.remove('hidden');
+				newBtn.setAttribute('aria-expanded', 'true');
+			}
+		});
+	}
+
+	// Run on initial load
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setupGlassHamburger);
+	} else {
+		setupGlassHamburger();
+	}
+
+	// Also run on Astro view transitions (if enabled)
+	document.addEventListener('astro:page-load', setupGlassHamburger);
+</script>
+
+<style>
+	nav a {
+		color: white;
+		border-bottom: 2px solid transparent;
+		text-decoration: none;
+		padding: 0.25rem 0.5rem;
+		border-radius: 9999px;
+		transition: background-color 0.2s ease;
+	}
+	nav a:hover {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+	nav a.active {
+		text-decoration: none;
+		font-weight: 600;
+		background-color: rgba(255, 255, 255, 0.15);
+		border-bottom-color: transparent;
+	}
+</style>

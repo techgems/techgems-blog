@@ -1,0 +1,28 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import GlassHeader from '../components/GlassHeader.astro';
+import HomeFooter from '../components/HomeFooter.astro';
+
+interface Props {
+	title: string;
+	description: string;
+    useWrapper?: boolean;
+}
+
+const { title, description, useWrapper = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<link rel="stylesheet" href="/css/main.css" />
+	</head>
+	<body class="bg-neutral-800">
+		<GlassHeader />
+        <main class={useWrapper ? "py-30" : ""}>
+            <slot />
+        </main>
+		<HomeFooter />
+	</body>
+</html>

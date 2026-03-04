@@ -2,7 +2,7 @@ import React from "react";
 
 export function Intel() : React.JSX.Element {
   return (
-    <div className="prose">
+    <div className="prose prose-invert">
       <p>
         Worked as a contingent worker at Intel Facilities on internal
         applications using Asp.net MVC, WebAPI and AngularJS and KendoUI. Agile

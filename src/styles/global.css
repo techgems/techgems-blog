@@ -263,3 +263,133 @@ hr {
     @apply bg-background text-foreground;
   }
 }
+
+/* Blob animation for glassmorphic cards */
+@keyframes blob {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.15);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 8s ease-in-out infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Hero background blob animation (slower, larger drift) */
+@keyframes hero-blob {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(60px, -30px) scale(1.1);
+  }
+  50% {
+    transform: translate(-40px, 50px) scale(0.95);
+  }
+  75% {
+    transform: translate(30px, 20px) scale(1.05);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.animate-hero-blob {
+  animation: hero-blob 14s ease-in-out infinite;
+}
+
+/* CTA button hover sweep animation */
+.cta-btn {
+  background-image: linear-gradient(to left, #06b6d4, #155e75, transparent, transparent);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+}
+
+.cta-btn:hover {
+  background-position: 0% 0;
+}
+
+/* Outlined CTA button variant */
+.cta-btn-outlined {
+  background-color: transparent;
+  border: 2px solid #06b6d4;
+  background-image: linear-gradient(to left, #06b6d4, #155e75, transparent, transparent);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease, border-color 0.5s ease;
+}
+
+.cta-btn-outlined:hover {
+  background-position: 0% 0;
+}
+
+/* Glass frost intermittent animation — active ~10% of cycle, idle the rest */
+@keyframes glass-frost {
+  0% {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  4% {
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+  8% {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  100% {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+@keyframes frost-gradient-sweep {
+  0% {
+    background-position: 50% 0%;
+  }
+  4% {
+    background-position: 50% 100%;
+  }
+  8% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
+
+.animate-glass-frost {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  background-size: 100% 300%;
+  animation:
+    glass-frost 30s ease-in-out infinite,
+    frost-gradient-sweep 30s ease-in-out infinite;
+}
+

@@ -2,7 +2,7 @@ import React from "react";
 
 export function FirstFactory() : React.JSX.Element {
     return (
-        <div className="prose">
+        <div className="prose prose-invert">
           <p>
             Worked as a Full stack developer and team lead for US clients, offering top notch services in development and proper communications. Worked for several clients such as Municibid.com, LiDAC.com and Kaplan Test Prep.
           </p>
