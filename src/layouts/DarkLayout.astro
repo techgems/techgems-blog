@@ -1,21 +1,24 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import BlogHead from '../components/BlogHead.astro';
 import GlassHeader from '../components/GlassHeader.astro';
 import HomeFooter from '../components/HomeFooter.astro';
 
 interface Props {
 	title: string;
 	description: string;
-    useWrapper?: boolean;
+    useWrapper: boolean;
+	useBlogHead: boolean;
+	imageURL?: string;
 }
 
-const { title, description, useWrapper = false } = Astro.props;
+const { title, description, useWrapper = false, useBlogHead = false, imageURL } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		{useBlogHead ? <BlogHead title={title} description={description} image={imageURL!} /> : <BaseHead title={title} description={description} />}
 		<link rel="stylesheet" href="/css/main.css" />
 	</head>
 	<body class="bg-neutral-800">

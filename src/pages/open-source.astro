@@ -4,7 +4,12 @@ import GlassCard from "../components/GlassCard.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
-<DarkLayout title={SITE_TITLE} description={SITE_DESCRIPTION} useWrapper={false}>
+<DarkLayout 
+	title={SITE_TITLE} 
+	description={SITE_DESCRIPTION} 
+	useWrapper={false}
+	useBlogHead={false}
+>
 	<div class="relative overflow-hidden min-h-screen pt-16">
 		<!-- Background blobs (full screen) -->
 		<div class="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-700/30 rounded-full blur-[60px] animate-hero-blob"></div>

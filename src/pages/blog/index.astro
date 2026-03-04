@@ -1,5 +1,6 @@
 ---
 import DarkLayout from '../../layouts/DarkLayout.astro';
+import { Image } from "astro:assets";
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -17,7 +18,7 @@ const posts = (await getCollection('blog', ({ data }) => {
 );
 ---
 
-<DarkLayout title={SITE_TITLE} description={SITE_DESCRIPTION} useWrapper={false}>
+<DarkLayout title={SITE_TITLE} description={SITE_DESCRIPTION} useWrapper={false} useBlogHead={false}>
 	<div class="relative overflow-hidden min-h-screen pt-16">
 		<!-- Background blobs -->
 		<div class="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-700/30 rounded-full blur-[60px] animate-hero-blob"></div>
@@ -35,7 +36,7 @@ const posts = (await getCollection('blog', ({ data }) => {
 							
 							let finalHeroImage = "";
 
-							if(post.data.usePlaceholderHeroInList) {
+							if(post.data.usePlaceholderHeroInList && !post.data.heroImage) {
 								const placeholderHeroImages = [
 									placeholderHeroImage1,
 									placeholderHeroImage2,
@@ -45,14 +46,15 @@ const posts = (await getCollection('blog', ({ data }) => {
 								const randomIndex = Math.floor(Math.random() * 4);
 								finalHeroImage = placeholderHeroImages[randomIndex];
 							}
-							else {
-								finalHeroImage = post.data.heroImage!;
-							}
 
 							return (
 								<li class={index === 0 ? "md:col-span-2 text-center" : ""}>
 									<a href={`/blog/${post.slug}/`} class="block group">
-										<img width={720} height={360} src={finalHeroImage} alt="" class="w-full mb-2 rounded-xl transition-shadow duration-300 group-hover:shadow-[0_8px_32px_rgba(6,182,212,0.2)]" />
+										{ post.data.usePlaceholderHeroInList && !post.data.heroImage ? (
+											<img width={720} height={360} src={finalHeroImage} alt="" class="w-full mb-2 rounded-xl transition-shadow duration-300 group-hover:shadow-[0_8px_32px_rgba(6,182,212,0.2)]" />
+										) : (
+											<Image src={post.data.heroImage!} alt="" class="w-full mb-2 rounded-xl transition-shadow duration-300 group-hover:shadow-[0_8px_32px_rgba(6,182,212,0.2)]" />
+										)}
 										<h4 class={`${index === 0 ? 'text-2xl sm:text-4xl' : 'text-xl sm:text-2xl'} text-gray-100 group-hover:text-cyan-400 transition-colors duration-200 m-0 leading-tight`}>{post.data.title}</h4>
 										<p class="text-gray-400 group-hover:text-cyan-400 transition-colors duration-200 m-0">
 											<FormattedDate date={post.data.date} />

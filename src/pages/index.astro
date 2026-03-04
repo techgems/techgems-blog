@@ -3,7 +3,7 @@ import DarkLayout from '../layouts/DarkLayout.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
-<DarkLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<DarkLayout title={SITE_TITLE} description={SITE_DESCRIPTION} useWrapper={false} useBlogHead={false}>
 		<section class="relative z-[2] overflow-hidden bg-neutral-800 text-white pb-16" style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 100px), 50% 100%, 0 calc(100% - 100px));">
 			<!-- Hero background blobs (larger, darker, slower) -->
 			<div class="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-700/50 rounded-full blur-[60px] animate-hero-blob"></div>

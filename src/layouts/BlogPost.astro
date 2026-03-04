@@ -1,14 +1,18 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import DarkLayout from './DarkLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, date, updatedDate, heroImage } = Astro.props;
+
+const imageURL = heroImage ? heroImage.src : undefined;
+const useBlogHead = !!heroImage;
 ---
 
-<DarkLayout title={title} description={description} useWrapper={false}>
+<DarkLayout title={title} description={description} useWrapper={false} useBlogHead={useBlogHead} imageURL={imageURL}>
 	<div class="relative overflow-hidden min-h-screen pt-16">
 		<!-- Background blobs -->
 		<div class="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-700/30 rounded-full blur-[60px] animate-hero-blob"></div>
@@ -21,7 +25,7 @@ const { title, description, date, updatedDate, heroImage } = Astro.props;
 		<div class="relative z-10">
 			<article class="my-8">
 				<div class="w-full">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" class="block mx-auto rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]" />}
+					{heroImage && <Image src={heroImage} alt="" class="block mx-auto rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]" />}
 				</div>
 				<div class="prose prose-invert prose-lg mx-auto px-4 xl:max-w-4xl 2xl:max-w-5xl">
 					<div class="text-center mb-2 pt-8 pb-0">
