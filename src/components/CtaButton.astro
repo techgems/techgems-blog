@@ -1,0 +1,16 @@
+---
+interface Props {
+	variant?: 'contained' | 'outlined';
+    class?: string;
+}
+
+const { variant = 'contained', class: className = '' } = Astro.props;
+
+const variantClasses = variant === 'outlined'
+	? 'cta-btn-outlined text-white hover:bg-white/10'
+	: 'cta-btn text-white hover:bg-neutral-800';
+---
+
+<button class={`cta-btn rounded-md text-base sm:text-xl lg:text-2xl font-normal px-4 py-2 transition-colors duration-200 ${variantClasses} ${className}`}>
+	<slot />
+</button>
