@@ -1,0 +1,65 @@
+---
+title: "The Architect's Trap: When Complexity Becomes the Product"
+date: 2026-03-13
+description: "Why great engineers don't always make great architects."
+published: true
+category: "Web Development"
+heroImage: "./Architects Trap.png"
+---
+# The Architect's Trap: When Complexity Becomes the Product
+
+There's a kind of engineer that gets excited about distributed systems, event buses, service meshes, and multi-region deployments. I've been that engineer. Many of us have, at some point. There's something intellectually seductive about sophisticated architecture — it *feels* like serious engineering. The truth is that it is more like destroying an anthill with a bulldozer.
+
+This post is about that trap, why we fall into it, and what separates an architect who understands their domain from one who is simply in love with the idea of building systems.
+
+## Speed Is the Price You Pay for Complexity
+
+Every architectural decision carries a cost. The more distributed your system, the higher the cognitive overhead for your team, the more surface area for failure, and the slower your development cycles become. Sometimes that tradeoff is absolutely worth it. But you have to be *extremely* certain that the sacrifice in team speed and productivity is a price your organization can afford to pay.
+
+A team of five engineers does not need microservices. That's not a controversial opinion — it's a matter of fit. Microservices exist to solve coordination problems that emerge at scale: when multiple teams need to own, deploy, and iterate on different parts of a system independently without stepping on each other. That problem doesn't exist on a team of five. On a team of five (or even a team of ten), microservices don't solve coordination problems, they *create* them.
+
+Just like how adding 3 new developers to a team of 7 can lead to a drop in productivity, adding more services to a small team can lead to a similar decline in efficiency. Both architects and business leaders need to understand this before committing to decisions that will slow down their teams.
+
+## Coupling Doesn't Disappear — It Transforms
+
+Microservices are frequently sold on the promise of eliminating coupling. The pitch goes: a monolith couples everything together, services let you decouple, therefore services are better. It's a seductive argument. It's also very incomplete.
+
+Coupling is best understood as a spectrum, not a binary. And thinking about it only in terms of code coupling is like being a two-dimensional shape living in Flatland — unaware that a third dimension even exists. In our case, that third dimension is infrastructure complexity and development time.
+
+The entropy analogy is useful here. Just as the universe's law of entropy ensures that disorder increases over time, the coupling you eliminate in code doesn't vanish — it reappears as a dependency on your infrastructure graph. Service A calling Service B through a message queue instead of a direct function call isn't *less* coupled, it's **differently** coupled. And that new shape of coupling often grows silently, edge by edge, until your dependency chart is a diagram no one fully understands anymore.
+
+A master architect's real work happens in the day-to-day decisions that prevent that dependency chart from growing out of control without anyone noticing. That's a discipline that requires restraint, not ambition.
+
+## Monoliths Aren't Inherently Bad
+
+Monoliths carry an unfair reputation. We've all worked in codebases that became "big balls of mud" over time — systems where nothing had clear ownership and everything touched everything else. That experience leaves a mark, and it's understandable why engineers come away wanting to never touch a monolith again.
+
+But that's confusing the symptom for the disease. The problem wasn't the monolith. The problem was the absence of discipline, clear boundaries, and intentional design within it. A well-structured monolith is maintainable, fast to iterate on and easy to traverse. Distributed systems are none of those things by default — you have to earn those properties through significant investment.
+
+We also live in a world of constantly changing requirements. What constitutes good design today can become inadequate the moment a business requirement appears that asks the system to do something it was never intended to do. That's not a failure of the architecture — it's the nature of software in organizations that are actually growing and evolving. The question is whether your architecture makes it easier or harder to adapt.
+
+## The Aeronautical Engineer Problem
+
+An analogy comes to mind here, albeit, an imperfect one: nobody expects the blueprints of an apartment complex to be useful for building a single-family home. Domain expertise matters. The tools, assumptions, and mental models that work at one scale and in one context break down entirely in another.
+
+This analogy has limits though. In real estate, the physical constraints of existing structures ground the conversation. You cannot reasonably propose turning a two-story house into an apartment complex, or moving a room of the house across the street. The suggestion is immediately recognizable as absurd.
+
+Software doesn't have that grounding. Systems are mentally malleable in ways that physical structures are not. The same team that built a modest CRUD application can convince themselves that they're now operating at a scale that demands RabbitMQ, Kubernetes, and a full service mesh — without any evidence that the system's actual usage warrants it. The lack of physical constraints makes it much easier to talk yourself into complexity that doesn't serve the problem.
+
+This is why technical judgment alone is insufficient. An architect who can't evaluate **why** a system needs to exist, who the users are, and what the organization's real constraints are will keep defaulting to what they find intellectually interesting rather than what is appropriate.
+
+## What Actually Makes a Good Architect
+
+Before technical ability comes problem understanding. An architect who deeply understands the domain they're building for will make better decisions than a technically brilliant engineer who is disconnected from the business context. Every time.
+
+This is also why industry experience is genuinely undervalued in the field. There's a meaningful difference between an engineer who enjoys building systems and one who understands — through experience with real organizations and real failures — **what to build** and **why**. The second kind of engineer knows when to reach for simplicity because they've seen what happens when you don't. They know what questions to ask before the first architecture diagram gets drawn. They know that the goal isn't a technically impressive system — it's a system that helps the organization do what it needs to do, for as long as possible, with the team it actually has.
+
+A longer-lived system is a better system, almost by definition. And longer-lived systems tend to be ones that were designed with humility about what the organization actually needed on the day the design was made.
+
+## On Restraint as an Architectural Virtue
+
+There is nothing wrong with finding distributed systems intellectually fascinating. There is nothing wrong with wanting to work on problems of genuine scale. But part of professional maturity in this field is developing the restraint to not impose that complexity on problems that don't warrant it.
+
+The best architectural decision you can make is often the simplest one that solves the problem in front of you, leaves room to evolve, and doesn't require your team to carry a cognitive burden they haven't earned the need to carry yet. That is, in my opinion, the definition of proper judgment.
+
+Complexity should be the last resort of an architect who has exhausted simpler options — not the first instinct of one who finds simple things boring.
